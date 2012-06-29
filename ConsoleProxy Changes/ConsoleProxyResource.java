@@ -159,6 +159,7 @@ public class ConsoleProxyResource extends ServerResourceBase implements
 		use. But if the oython module is not found, it then executes as normal
 	*/
 			File f = new File("/usr/local/cs_python_modules/natchecker.py");
+			final StringBuffer sb = new StringBuffer();
 			if (f.exists()) {
 
 				String externalIp = "";	
@@ -173,8 +174,7 @@ public class ConsoleProxyResource extends ServerResourceBase implements
 				}
 
 	//Modified code block
-
-				final StringBuffer sb = new StringBuffer();
+	
 				sb.append("http://").append(externalIp).append(":" + cmdPort)
 						.append("/cmd/getstatus");
 //	 	End hijack
@@ -183,7 +183,6 @@ public class ConsoleProxyResource extends ServerResourceBase implements
 
 //		Continue with original code
 
-				final StringBuffer sb = new StringBuffer();
 				sb.append("http://").append(proxyManagementIp).append(":" + cmdPort)
 						.append("/cmd/getstatus");
 			}			
