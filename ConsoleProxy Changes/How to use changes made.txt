@@ -1,0 +1,12 @@
+Basically whenever the you try to load a console it will look for a file on the host called:
+
+/usr/local/cs_python_modules/natchecker.py
+
+The minimum that file needs to contain is 'print "{-any-public-ip-}"'
+
+If that file exists, CS will use that IP for connecting to the CPVM. If it does not exist, CS will act as normal.
+
+You can get creative in that file and add logic, APIs, firewall interaction.....
+
+Thanks
+
