@@ -1,3 +1,7 @@
+################### This code does not yet work. 
+This is for the purpose of learning the system and isolating the proper code. ##############################
+
+
 Basically whenever the you try to load a console it will look for a file on the host called:
 
 /usr/local/cs_python_modules/natchecker.py
