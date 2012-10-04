@@ -1,0 +1,47 @@
+# config file for expression platform installer
+# Written by Kelcey Damage, 2012
+#
+# REPOS
+# List any additional repositories to be installed, and the path to the RPM file. Please format as 'REPO; repo_name: /path/to/rpm'.
+# Example: (REPO: epel "http://www.path.to/rpm")
+REPO: epel "http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-7.noarch.rpm"
+
+#
+# YUM PACKAGES
+# List all the yum packages to be installed from the standard and additional repositories. Please list one item per line,
+# beginning with a semi-colon.
+# Example: (;httpd)
+;httpd
+;mysql
+;mysql-server
+;php
+;php-mysql
+;php-gd
+;php-pdo
+;php-pecl-memcache
+;php-pspell
+;memcached
+;ImageMagick
+;http-devel
+;pcre
+;pcre-devel
+;curl
+;curl-devel
+;libxml2
+;libxml2-devel
+
+#
+# SYSTEM SERVICES
+# List any system services that need to be turned on or off. Please format as 'service: STATE', where STATE = either ON or
+# OFF. 
+# Example: (httpd: on)
+httpd: on
+mysqld: on
+memcached: on
+nfs: on
+
+#
+# ADVANCED CONFIG
+# For any additional commands that need to be run on the system. Please specify as 'service_name: command'.
+# Example: (nfs: "mount -t nfs /path/to/share /mount/path") 
+# 
