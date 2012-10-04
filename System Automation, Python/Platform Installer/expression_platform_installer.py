@@ -14,7 +14,10 @@ class ConfigReader(object):
 		self.commands = {}
 		self.packages = {}
 		self.repositories = {}
-		self.autoservices = {}
+		self.autoconfigservices = {}
+		self.restricted = {}
+		self.security = {}
+		self.nagios = {}
 
 	def updateDictionary(self, key, value, dictionary):
 			dictionary[key.group(0)] = value.group(0)
@@ -37,14 +40,23 @@ class ConfigReader(object):
 			elif re.search(r'\w+(?=\:)', line) and re.search(r'(on|off)', line):
 				self.updateDictionary(re.search(r'(.*\w+.*(?=\: ))', line), re.search(r'((?<=\: )\w+.*)', line), self.services)
 # Autoconfig-Services
-			elif re.search(r'(\w+)', line) and not re.search(r'((?<= )\w+)|(\;)', line):
-				self.updateDictionary(re.search(r'(\w+.*)', line), re.search(r'(\w+.*)', line), self.autoservices)
+			elif re.search(r'AUTO_CONFIG', line):
+				self.updateDictionary(re.search(r'(\w+.*(?=\:))', line), re.search(r'((?<= ).*\w+.*)', line), self.autoconfigservices)
 # Commands
-			elif re.search(r'\w+(?=\:)', line) and not re.search(r'(on|off|REPO)', line):
-				self.updateDictionary(re.search(r'(.*\w+.*(?=\: ))', line), re.search(r'((?<=\: )\"\w+.*\")', line), self.commands)
+			elif re.search(r'(COMMAND)', line):
+				self.updateDictionary(re.search(r'((?<=\: ).*\w+.*(?= \"))', line), re.search(r'((?<= )\"\w+.*\")', line), self.commands)
 # Packages			
 			elif re.search(r'(?<=\;)\w+', line):
 				self.updateDictionary(re.search(r'(?<=\;)\w+.*', line), re.search(r'(?<=\;)\w+.*', line), self.packages)
+# Restrictions
+			elif re.search(r'(RESTRICT)', line):
+				self.updateDictionary(re.search(r'(\w+.*(?=\:))', line), re.search(r'((?<= ).*\w+.*)', line), self.restricted)
+# security
+			elif re.search(r'(SECURITY)', line):
+				self.updateDictionary(re.search(r'(\w+.*(?=\:))', line), re.search(r'((?<= ).*\w+.*)', line), self.security)
+# Nagios
+			elif re.search(r'(NAGIOS)', line):
+				self.updateDictionary(re.search(r'(.*\w+.*(?=\:))', line), re.search(r'((?<=\: ).*\w+.*)', line), self.nagios)
 
 class PackageInstaller(ConfigReader):
 	def __init__(self):
@@ -73,6 +85,23 @@ class ServiceManager(ConfigReader):
 			commandline = 'chkconfig %s %s' % (item, self.services[item])
 			subprocess.check_call(commandline, shell=True)
 
+	def configureMySQL(self):
+		pass
+
+class Security(ConfigReader):
+	def __init__(self):
+		super(Security, self).__init__()
+		pass
+
+	def restrictionHandling(self):
+		pass
+
+	def securityProfile(self):
+		pass
+
+	def configureNagios(self):
+		pass
+
 class AdvCommandExecution(ConfigReader):
 	def __init__(self):
 		super(AdvCommandExecution, self).__init__()
@@ -85,7 +114,7 @@ class SetupPlatform(PackageInstaller, ServiceManager, AdvCommandExecution):
 	def __init__(self, config):
 		super(SetupPlatform, self).__init__()
 		self.parseFile(config)
-
+		print self.nagios
 
 #if __name__ == '__main__':
 #	parser = optparse.OptionParser()

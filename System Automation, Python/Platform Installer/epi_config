@@ -43,14 +43,35 @@ nfs: on
 #
 # ADVANCED CONFIG
 # For any additional commands that need to be run on the system. Please specify as 'service_name: command'.
-# Example: (nfs: "mount -t nfs /path/to/share /mount/path") 
-# 
+# Example: (COMMAND: nfs "mount -t nfs /path/to/share /mount/path") 
+COMMAND: nfs "mount -t nfs /path/to/share /mount/path"
 
 #
 # SYSTEM ROLE
+# Specify the system role to run the related auto-config library.
+# Exapmle: (ROLE: {web-server, mail-server, load-balancer, database-server, etc})
+ROLE: web-server
 
 #
 # AUTO-CONFIGURE SERVICES
-httpd
-mysql
+# Specify services for custom configuration
+# Example: (AUTO_CONFIG: (httpd, mysql))
+AUTO_CONFIG: (httpd, mysql)
+
+#
+# RESTRICTION
+# Specify any services you would like to block from the auto-config engine
+# Example: (RESTRICT: (httpd, mysql))
+
+#
+# SECURITY
+# Specify which default security profile to use
+# Example: (SECURITY: minimal, SECURITY: internet-facing)
+SECURITY: minimal
+
+#
+# NAGIOS
+# Specify Nagios configuration parameters
+NAGIOS_IPS: ("enter IP addresses",)
+NAGIOS_USER: "enter user name"
 
