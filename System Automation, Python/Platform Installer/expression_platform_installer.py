@@ -1,10 +1,12 @@
 #!/usr/bin/env python
+# Written by Kelcey Damage, 2012
 
 # This will install various components of the expression cloud system
 
 import optparse, re, subprocess, sys
 
-config = 'epi_config'
+baseconfig = 'epi_config'
+extendedconfig = ''
 
 class ConfigReader(object):
 	def __init__(self):
@@ -12,6 +14,7 @@ class ConfigReader(object):
 		self.commands = {}
 		self.packages = {}
 		self.repositories = {}
+		self.autoservices = {}
 
 	def updateDictionary(self, key, value, dictionary):
 			dictionary[key.group(0)] = value.group(0)
@@ -33,6 +36,9 @@ class ConfigReader(object):
 # Services
 			elif re.search(r'\w+(?=\:)', line) and re.search(r'(on|off)', line):
 				self.updateDictionary(re.search(r'(.*\w+.*(?=\: ))', line), re.search(r'((?<=\: )\w+.*)', line), self.services)
+# Autoconfig-Services
+			elif re.search(r'(\w+)', line) and not re.search(r'((?<= )\w+)|(\;)', line):
+				self.updateDictionary(re.search(r'(\w+.*)', line), re.search(r'(\w+.*)', line), self.autoservices)
 # Commands
 			elif re.search(r'\w+(?=\:)', line) and not re.search(r'(on|off|REPO)', line):
 				self.updateDictionary(re.search(r'(.*\w+.*(?=\: ))', line), re.search(r'((?<=\: )\"\w+.*\")', line), self.commands)
@@ -67,7 +73,15 @@ class ServiceManager(ConfigReader):
 			commandline = 'chkconfig %s %s' % (item, self.services[item])
 			subprocess.check_call(commandline, shell=True)
 
-class SetupPlatform(PackageInstaller, ServiceManager):
+class AdvCommandExecution(ConfigReader):
+	def __init__(self):
+		super(AdvCommandExecution, self).__init__()
+		pass
+
+	def executeCommands(self):
+		pass
+
+class SetupPlatform(PackageInstaller, ServiceManager, AdvCommandExecution):
 	def __init__(self, config):
 		super(SetupPlatform, self).__init__()
 		self.parseFile(config)
@@ -77,5 +91,5 @@ class SetupPlatform(PackageInstaller, ServiceManager):
 #	parser = optparse.OptionParser()
 
 
-SP = SetupPlatform(config)
-SP.manageServices()
+SP = SetupPlatform(baseconfig)
+#SP.manageServices()

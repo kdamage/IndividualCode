@@ -45,3 +45,12 @@ nfs: on
 # For any additional commands that need to be run on the system. Please specify as 'service_name: command'.
 # Example: (nfs: "mount -t nfs /path/to/share /mount/path") 
 # 
+
+#
+# SYSTEM ROLE
+
+#
+# AUTO-CONFIGURE SERVICES
+httpd
+mysql
+
