@@ -70,8 +70,9 @@ AUTO_CONFIG: (httpd, mysql)
 SECURITY: minimal
 
 #
-# NAGIOS
-# Specify Nagios configuration parameters
-NAGIOS_IPS: ("enter IP addresses",)
-NAGIOS_USER: "enter user name"
+# MONITORING
+# Specify monitoring configuration parameters
+MONITORING_SERVICE: "Nagios"
+MONITOR_IPS: ("enter IP addresses",)
+MONITOR_USER: "enter user name"
 

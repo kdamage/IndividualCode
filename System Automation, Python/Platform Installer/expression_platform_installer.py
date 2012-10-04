@@ -17,7 +17,7 @@ class ConfigReader(object):
 		self.autoconfigservices = {}
 		self.restricted = {}
 		self.security = {}
-		self.nagios = {}
+		self.monitoring = {}
 
 	def updateDictionary(self, key, value, dictionary):
 			dictionary[key.group(0)] = value.group(0)
@@ -54,9 +54,9 @@ class ConfigReader(object):
 # security
 			elif re.search(r'(SECURITY)', line):
 				self.updateDictionary(re.search(r'(\w+.*(?=\:))', line), re.search(r'((?<= ).*\w+.*)', line), self.security)
-# Nagios
-			elif re.search(r'(NAGIOS)', line):
-				self.updateDictionary(re.search(r'(.*\w+.*(?=\:))', line), re.search(r'((?<=\: ).*\w+.*)', line), self.nagios)
+# Monitoring
+			elif re.search(r'MONITOR', line):
+				self.updateDictionary(re.search(r'(.*\w+.*(?=\:))', line), re.search(r'((?<=\: ).*\w+.*)', line), self.monitoring)
 
 class PackageInstaller(ConfigReader):
 	def __init__(self):
@@ -99,7 +99,7 @@ class Security(ConfigReader):
 	def securityProfile(self):
 		pass
 
-	def configureNagios(self):
+	def configureMonitoring(self):
 		pass
 
 class AdvCommandExecution(ConfigReader):
@@ -114,7 +114,7 @@ class SetupPlatform(PackageInstaller, ServiceManager, AdvCommandExecution):
 	def __init__(self, config):
 		super(SetupPlatform, self).__init__()
 		self.parseFile(config)
-		print self.nagios
+		print self.monitoring
 
 #if __name__ == '__main__':
 #	parser = optparse.OptionParser()
