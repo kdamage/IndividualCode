@@ -1,12 +1,10 @@
-#!/ usr/bin/env python
-# By: Kelcey Damage, 2012
+import hashlib, hmac, string, base64, urllib
+import httplib
 
-import hashlib, hmac, string. base64, urllib
-
-class SignedAPICall(Object):
-    def _init_(self, api_url, apikey, secret):
+class SignedAPICall(object):
+    def __init__(self, api_url, apiKey, secret):
         self.api_url = api_url
-        self.apikey = apiKey
+        self.apiKey = apiKey
         self.secret = secret
 
     def request(self, args):
@@ -14,7 +12,7 @@ class SignedAPICall(Object):
 
         self.params = []
         self._sort_request(args)
-        self._creat_signature()
+        self._create_signature()
         self._build_post_request()
 
     def _sort_request(self, args):
@@ -35,3 +33,9 @@ class SignedAPICall(Object):
     def _build_post_request(self):
         self.query += '&signature=' + urllib.quote_plus(self.signature)
         self.value = self.api_url + '?' + self.query
+
+# How to use       
+
+# api = SignedAPICall(api_url, apiKey, secret)
+# request = {'command': 'listVirtualMachines', 'response': 'json', 'listall': 'true'}
+# api.request(request)
