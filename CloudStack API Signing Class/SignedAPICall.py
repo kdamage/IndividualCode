@@ -1,5 +1,12 @@
+#!/ usr/bin/env python
+# By: Kelcey Damage, 2012 & Kraig Amador, 2012
+
+api_url = 'your_stuff_here'
+apiKey = 'your_stuff_here'
+secret = 'your_stuff_here'
+
 import hashlib, hmac, string, base64, urllib
-import httplib
+import json, urllib
 
 class SignedAPICall(object):
     def __init__(self, api_url, apiKey, secret):
@@ -34,8 +41,33 @@ class SignedAPICall(object):
         self.query += '&signature=' + urllib.quote_plus(self.signature)
         self.value = self.api_url + '?' + self.query
 
-# How to use       
+class CloudStack(SignedAPICall):
+    def __getattr__(self, name):
+        def handlerFunction(*args, **kwargs):
+            if kwargs:
+                return self._make_request(name, kwargs)
+            return self._make_request(name, args[0])
+        return handlerFunction
 
-# api = SignedAPICall(api_url, apiKey, secret)
-# request = {'command': 'listVirtualMachines', 'response': 'json', 'listall': 'true'}
-# api.request(request)
+    def _http_get(self, url):
+        response = urllib.urlopen(url)
+        return response.read()
+
+    def _make_request(self, command, args):
+        args['response'] = 'json'
+        args['command'] = command
+        self.request(args)
+        data = self._http_get(self.value)
+        # The response is of the format {commandresponse: actual-data}
+        key = command.lower() + "response"
+        return json.loads(data)[key]
+
+#Usage
+
+#api = CloudStack(api_url, apiKey, secret)
+
+#request = {'listall': 'true'}
+#result = api.listVirtualMachines(request)
+#print "count", result['count']
+#print "api url", api.value
+    
