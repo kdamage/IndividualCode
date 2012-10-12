@@ -4,7 +4,7 @@
 import hashlib, hmac, string. base64, urllib
 
 class SignedAPICall(Object):
-    def _init_(self, api_url, apikey,, secret):
+    def _init_(self, api_url, apikey, secret):
         self.api_url = api_url
         self.apikey = apiKey
         self.secret = secret
